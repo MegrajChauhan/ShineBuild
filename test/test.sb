@@ -4,3 +4,58 @@
 > Basically, a set of instructions is defined per unit.
 
 > Here is an example for this project:
+
+> source is a keyword and any group of text after that is a source folder until a newline
+source(src)
+header(include) > same as source but for header files
+output(build) > specify the output directory[The build system handles everything internally]
+name(io) > The name of the final executable which is defaulted to "out" if not provided 
+final(IO gcc) > The program that needs to be called at last to make the final build
+
+> The below is a variable
+> If there is an "=" sign after an identifier, it is a variable
+> Everything after the equals until the newline is the value of the variable unless separated by spaces which indicates list
+var=Hello World! > This means spaces are not possible
+var1 = .var ABC > This concatanates var before ABC
+
+> Everything after the equals is a string hence no Numbers
+> They are also expressions
+var2 = var == (var1 == ABC) > Should return true or false. Note that "==" means "is equal to" in the sense of every character being the same
+                            > Also (var1 == ABC) would yeild false hence it becomes "var == false"
+                            > Since var1 is a list and ABC is not, it automatically translates to false
+                            > If the expression were (var == var1), every single item along with the order must match for true
+var3 = if (var2 == false), YES else, NO >  Note that commas are not a part of the syntax. In fact they are ignored altogether
+var4 = len var > This returns 2, as string of course, because var is a list
+var5 = len var2 > var5 would be equal to 5 because false is 5 characters long
+var6 = .var.0 > Access any element
+
+_header_dirs_ = NULL
+foreach HEADER h _header_dirs_ += -I + h 
+
+>   from    to
+for (0    var5)  echo HAHAHA WOO! > Echo everything after "echo"
+                                  > true is 1 and false is 0 of course
+
+> There will be built-in variables and each will be all caps
+
+conditional (HOST == Linux) header(my_folder) else echo Not Linux Ehhh!  
+
+group IO
+{
+    .c
+    {
+        > here you define the rules for .c files
+        program gcc > define the program that needs to be called
+        flags -Wpedantic -Wall -Wextra ._header_dirs_ > all the flags that needs to be passed
+        type static > static or shared? executable is not an option here
+        > The names are automatically written. example: a.c is changed to a.o automatically
+        > The build will not do "-Iinclude" automatically as this is not required for every programming language
+    }
+}
+
+> other file types....
+> The final build to get the executable is performed automatically
+> What the group does is separates different types of programs
+> For eg: Rust programs follow different internal ABI for function calls than C and hence they cannot be linked together
+> For this reason, we have groups. The syntax is group <NAME>
+> The "final" command also requires the group name as the first argument
