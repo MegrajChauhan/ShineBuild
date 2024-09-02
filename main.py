@@ -12,9 +12,12 @@ Song- Belong Together by Mark Ambor
 """
 
 from components import lexer
+from components import parser
 
 l = lexer.Lexer("test/test.sb")
-l.lex_all()
+# l.lex_all()
+p = parser.Parser(l)
+p.parse()
 
-for t in l.token_list:
-    print(f"{t.type} {t.val} {t.line} {t.col}")
+# for t in l.token_list:
+#     print(f"{t.type} {t.val} {t.line} {t.col}")

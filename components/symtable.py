@@ -1,9 +1,9 @@
 from enum import Enum
 
 class Type(Enum):
-    _GLOBAL_ = 0
-    _LIST_ = 1
-    _STR_ = 2
+    GLOBAL = 0
+    LIST = 1
+    STR = 2
 
 class Base:
     def __init__(self, _type) -> None:
@@ -14,7 +14,7 @@ class Base:
 
 class List(Base):
     def __init__(self):
-        super().__init__(Type._LIST_)
+        super().__init__(Type.LIST)
         self.count = 0
         self.values = []
     
@@ -33,7 +33,7 @@ class List(Base):
 
 class Value(Base):
     def __init__(self, val):
-        super().__init__(Type._STR_)
+        super().__init__(Type.STR)
         self.value = val # This will only ever be a string
     
     def get_len(self):
