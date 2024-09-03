@@ -15,6 +15,7 @@ class Parser:
         self.tokens: list[lexer.Token] = _l.token_list
         self.ind = -1
         self.length = len(self.tokens)
+        self.append_to_last = False # For Nodes such as foreach
             
     def next(self):
         self.ind+=1
@@ -38,6 +39,8 @@ class Parser:
                     self.name()
                 case lexer.TokenType.FINAL:
                     self.handle_final()
+                case lexer.TokenType.IDENTIFIER:
+                    self.handle_variables()
                 
             curr = self.next()
             
@@ -94,6 +97,7 @@ class Parser:
         self.nodes.append(nodes.Node(nodeK(paths)))
         
     def handle_final(self):
+        tmp =self.tokens[self.ind]
         curr = self.next()
         if curr == None:
             die("Unexpected EOF when expected a parenthesis.", tmp.line,log.SYNTAX_ERROR)
@@ -130,3 +134,23 @@ class Parser:
             curr = self.next()    
         exe_name = curr.val
         self.nodes.append(nodes.Node(nodes.NodeFinal(grp_name, exe_name)))
+    
+    def handle_variables(self):
+        tmp = self.tokens[self.ind]
+        name_of_var = tmp.val
+        curr = self.next()
+        if curr == None:
+            die("Unexpected EOF when expected a EQUALS.", tmp.line,log.SYNTAX_ERROR)
+        if curr.type != lexer.TokenType.ASSIGN:
+            die("Expected a '=' operator here.", curr.line, log.SYNTAX_ERROR)
+        curr = self.next()
+        expr = []
+        while curr != None and curr.type != lexer.TokenType.NEW_LINE: 
+            expr.append(curr)
+            curr = self.next()
+        if len(expr) == 0:
+            die(f"Variable {name_of_var} has not been initialized.", tmp.line, log.SYNTAX_ERROR)
+        self.nodes.append(nodes.Node(nodes.NodeVariable(name_of_var, nodes.Expression(expr))))
+        
+    def handle_foreach(self):
+        pass

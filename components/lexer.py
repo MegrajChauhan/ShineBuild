@@ -71,7 +71,8 @@ key_iden = {
     'flags': TokenType.FLAGS,
     'type': TokenType.TYPE,
     'static': TokenType.STATIC,
-    'shared': TokenType.SHARED
+    'shared': TokenType.SHARED,
+    "NULL": TokenType.NULL
 }
 
 class Token:

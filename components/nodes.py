@@ -7,6 +7,7 @@ class NodeKind(Enum):
     COMMAND_NAME = 4
     COMMAND_FINAL = 5
     VARIABLE = 6
+    COMMAND_FOREACH = 7
 
 class NodeBase:
     def __init__(self, kind: NodeKind):
@@ -61,19 +62,27 @@ class NodeFinal(NodeBase):
 # To this parser, everything after '=' is part of the expression until the new line
 # It is the expression parser's job to make sense of those tokens
 class Expression:
-    def __init__(self) -> None:
-        self.tok_list = []
+    def __init__(self, toks) -> None:
+        self.tok_list = toks
     
     def add(self, tok):
         self.tok_list.append(tok)
 
 class NodeVariable(NodeBase):
-    def __init__(self, expr):
+    def __init__(self, name, expr: Expression):
         super().__init__(NodeKind.VARIABLE)
         self.expr = expr
+        self.name = name
     
     def get_expr(self):
         return self.expr
+
+class NodeForEach(NodeBase):
+    def __init__(self, var_name, collecting_var, expr):
+        super().__init__(NodeKind.COMMAND_FOREACH)
+        self.var_name = var_name
+        self.collecting_var = collecting_var
+        self.expr = expr
 
 class Node:
     def __init__(self, n):
