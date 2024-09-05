@@ -12,7 +12,6 @@ class TokenType(Enum):
     EQUALS_TO = 4 # ==
     ASSIGN = 5    # =
     DOT = 6
-    PLUS_EQUAL = 7 # +=
     OPEN_CURLY = 8
     CLOSE_CURLY = 9
     PLUS = 10
@@ -27,7 +26,6 @@ class TokenType(Enum):
     FALSE  = 19
     NULL = 20
     FOREACH = 21
-    CONDITIONAL = 22
     ELSE = 23
     GROUP = 24
     PROGRAM = 25
@@ -42,7 +40,6 @@ class TokenType(Enum):
 oper_iden = {
     '=': TokenType.ASSIGN,
     '==': TokenType.EQUALS_TO,
-    '+=': TokenType.PLUS_EQUAL,
     '+': TokenType.PLUS,
     '(': TokenType.OPEN_PAREN,
     ')': TokenType.CLOSE_PAREN,
@@ -64,7 +61,6 @@ key_iden = {
     'len' : TokenType.LEN,
     'foreach': TokenType.FOREACH,
     'for': TokenType.FOR,
-    'conditional': TokenType.CONDITIONAL,
     'echo': TokenType.ECHO,
     'group': TokenType.GROUP,
     'program': TokenType.PROGRAM,

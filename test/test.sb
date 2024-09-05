@@ -24,26 +24,48 @@ var2 = var == (var1 == ABC) @ Should return true or false. Note that "==" means 
                             @ Also (var1 == ABC) would yeild false hence it becomes "var == false"
                             @ Since var1 is a list and ABC is not, it automatically translates to false
                             @ If the expression were (var == var1), every single item along with the order must match for true
-var3 = if (var2 == false), YES else, NO @  Note that commas are not a part of the syntax. In fact they are ignored altogether
+var3 = NO @  Note that commas are not a part of the syntax. In fact they are ignored altogether
 var4 = len var @ This returns 2, as string of course, because var is a list
 var5 = len var2 @ var5 would be equal to 5 because false is 5 characters long
 var6 = .var.0 @ Access any element
 
 _header_dirs_ = NULL
-foreach HEADER h _header_dirs_ += -I + h 
+foreach (HEADER h)
+{
+    _header_dirs_ = -I + h 
+    {
+    }
+    {
+    }
+} 
 
-@   from    to
-for (0    var5)  echo HAHAHA WOO! @ Echo everything after "echo"
+if (var2 == false)
+{
+    var3 = YES
+}
+else
+{
+    var3 = NO
+}
+
+@ For the three different tokens in the for-loop
+@ The first two can be already defined variables but they must have integral values
+
+
+@   from    to  the index
+for (0    var5     i)
+{
+    echo HAHAHA WOO! i @ Echo everything after "echo"
                                   @ true is 1 and false is 0 of course
+}
 
-@ There will be built-in variables and each will be all caps
-
-conditional (HOST == Linux) header(my_folder) else echo Not Linux Ehhh!  
+@ There will be built-in variables and each will be all caps  
 
 group IO
 {
     .c
     {
+        dependency 
         @ here you define the rules for .c files
         program gcc @ define the program that needs to be called
         flags -Wpedantic -Wall -Wextra ._header_dirs_ @ all the flags that needs to be passed

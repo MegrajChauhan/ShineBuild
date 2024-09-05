@@ -8,6 +8,10 @@ class NodeKind(Enum):
     COMMAND_FINAL = 5
     VARIABLE = 6
     COMMAND_FOREACH = 7
+    SCOPE = 8
+    IF = 9
+    ELSE = 10
+    FOR = 11
 
 class NodeBase:
     def __init__(self, kind: NodeKind):
@@ -78,11 +82,35 @@ class NodeVariable(NodeBase):
         return self.expr
 
 class NodeForEach(NodeBase):
-    def __init__(self, var_name, collecting_var, expr):
+    def __init__(self, var_name, collecting_var, scope):
         super().__init__(NodeKind.COMMAND_FOREACH)
         self.var_name = var_name
         self.collecting_var = collecting_var
+        self.scope = scope
+
+class NodeScope(NodeBase):
+    def __init__(self, scope):
+        super().__init__(NodeKind.SCOPE)
+        self.scope = scope
+
+class NodeIf(NodeBase):
+    def __init__(self, expr: Expression, scope):
+        super().__init__(NodeKind.IF)
         self.expr = expr
+        self.scope = scope
+    
+class NodeElse(NodeBase):
+    def __init__(self, scope):
+        super().__init__(NodeKind.ELSE)
+        self.scope = scope
+    
+class NodeFor(NodeBase):
+    def __init__(self, _from, _to, _var, scope):
+        super().__init__(NodeKind.FOR)
+        self._from = _from
+        self._to = _to
+        self._var = _var
+        self.scope = scope
 
 class Node:
     def __init__(self, n):
